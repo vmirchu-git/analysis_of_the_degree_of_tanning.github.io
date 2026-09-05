@@ -1,108 +1,58 @@
+<p align="center">
+  <img src="assets/diagram.svg" alt="Quantifying intent duplication pipeline" width="100%">
+</p>
+
+<p align="right"><a href="README.ru.md">Русская версия →</a></p>
+
 # Duplicate Intent Analysis for Chatbots
 
----
+![Python](https://img.shields.io/badge/Python-pandas-14131a?style=flat-square&labelColor=14131a&color=7a1f2b)
+![stats](https://img.shields.io/badge/statistics-sample%20based-14131a?style=flat-square&labelColor=14131a&color=7a1f2b)
+![status](https://img.shields.io/badge/status-ongoing%2C%20verified%20impact-14131a?style=flat-square&labelColor=14131a&color=c9a227)
 
-## 🇬🇧 English version
-**Tech stack:** Python • pandas • statistics 
+> **Note on source code and scope.** This repository documents methodology, design decisions, and results only; the implementation is proprietary to the employer and not published here. This was a collaborative project with the NLP team, since intent duplication directly affects class separability, which falls within their domain. The quantitative analysis, statistical validation, and business case described here were led by the author.
 
-### Context  
-The chatbot system had a high level of duplicate intents across different bots, causing multiple problems:  
-- Reduced model performance and accuracy.  
-- Missed opportunities for automation in production.  
-- Difficulty prioritizing intents due to unclear mappings.  
-- LLMs and new classifiers were less effective.  
+Business leadership didn't initially see the need to merge duplicate chatbot intents. This project replaced that skepticism with a single, hard-to-argue-with number — and turned into an active initiative that's still improving intent accuracy today.
 
-Business analysts initially did not see the need for merging duplicates, so we had to quantify the problem with clear percentages to justify the project.
+## At a glance
 
-### Goal  
-- Calculate the percentage of duplicate intents to demonstrate the need for merging.  
-- Merge duplicate intents to improve overall system efficiency.  
-- Provide clear data to support the initiative to senior leadership.
+| | |
+|---|---|
+| **Duplication rate found** | over 50% of production intents on the channel measured |
+| **Scope** | the largest chatbot channel, measured on a representative sample |
+| **Status** | merge initiative ongoing; accuracy improvement verified in practice |
 
-### Approach  
-- Annotated reasons for non-automated chats. For chats marked as “intent belongs to another bot” or “no such bot,” we selected potential matching intents.  
-- Used a representative sample and calculated the proportion of chats that could map to multiple bots. This proportion represented the duplication rate.  
-- Applied strong statistical analysis to validate findings.  
-- Key metrics:  
-  - Duplication percentage  
-  - Coverage of automated responses  
-  - Impact on accuracy of intents and classifier performance  
+## Problem
 
-### Results  
-- Calculated that over 50% of production intents were duplicates.  
-- Demonstrated the necessity of merging to leadership.  
-- Launched the duplicate merging project, which is now actively improving intent accuracy and automation.  
-- Positive side effects: improved clarity in intent mapping, smoother workflow, and more efficient classifier performance.
+Duplicate intents across chatbot systems were quietly causing several compounding problems: lower model accuracy, missed automation opportunities in production, unclear prioritization because the same underlying intent existed in multiple places, and reduced effectiveness for both classifiers and LLMs trying to work with an ambiguous intent structure. None of this was disputed once explained — but without a number attached to it, leadership didn't see it as urgent enough to act on.
 
-### Business Impact  
-- Increased speed of work and level of automation.  
-- Improved accuracy of intents and overall model performance.  
-- Positive impact on classification metrics and team productivity.  
-- Overall enhancement of user satisfaction and product quality.
+## Approach
 
-### Key Skills Highlighted  
-- Statistical analysis and problem-solving.  
-- Data processing with Python and pandas.  
-- Collaboration with NLP team for actionable insights.  
-- Clear communication of technical findings to leadership.  
+**Finding candidate duplicates.** Chats that failed to automate were annotated by reason — specifically, cases marked "intent belongs to another bot" or "no matching bot exists" — and for each, potential matching intents were identified.
 
-### Additional Notes  
-- Visualizations and dashboards were created to illustrate duplicate percentages and mapping logic.  
-- Project has been integrated into production workflows for ongoing duplicate management.
+**Quantifying the overlap.** Using a representative sample from the largest chatbot channel, the analysis calculated the proportion of chats that could plausibly map to more than one bot. That proportion is the duplication rate.
 
-### Data Pipeline
+**Validation.** Findings were checked statistically against the sample before being presented, and reviewed jointly with the NLP team given the direct link between intent duplication and how separable the resulting classes are for a classifier.
 
-![Pipeline diagram](assets/pipeline_gb_version.png)
+**Key metrics tracked:** duplication percentage, coverage of automated responses, and the downstream impact on intent accuracy and classifier performance.
+
+## Results
+
+- Found that over 50% of production intents on the measured channel were duplicates — a figure precise and striking enough to change leadership's view of the problem.
+- The duplicate-merging initiative it justified is ongoing, and its improvement to intent accuracy has been verified in practice, not just assumed.
+- Side effects turned out to matter almost as much as the headline number: clearer intent mapping, a smoother day-to-day workflow, and a more effective classifier as a direct result of reduced ambiguity.
+
+## Business impact
+
+- Increased automation and processing speed by removing the ambiguity duplicate intents had introduced.
+- Improved intent accuracy and overall model performance.
+- Positive, measurable effect on classification metrics and team productivity.
+- Indirectly improved user satisfaction and product quality by resolving a structural issue rather than patching around it.
+
+## Tech stack
+
+Python · pandas · statistical analysis
 
 ---
 
-## 🇷🇺 Русский вариант
-**Технологии:** Python • pandas • статистика 
-
-### Контекст  
-В системе чатботов наблюдалась высокая задубленность интентов между разными ботами, что приводило к:  
-- Снижению производительности и точности модели.  
-- Потере возможностей для автоматизации на проде.  
-- Сложностям с приоритизацией интентов из-за неясной структуры.  
-- Меньшей эффективности классификатора.  
-
-Бизнес-аналитики изначально не видели необходимости слияния дублей, поэтому требовалось количественно подтвердить проблему с помощью точных процентов.
-
-### Цель  
-- Посчитать процент задубленности интентов для обоснования задачи слияния.  
-- Объединить дубли для улучшения работы системы.  
-- Предоставить точные данные для принятия решения.
-
-### Подход  
-- Разметили причины неавтоматизации чатов. Для чатов с отметками «намерение подходит к другому боту» или «нет такого бота» подобрали потенциальные интенты.  
-- Выбрали репрезентативную выборку и посчитали долю строк, подходящих к нескольким ботам — это и есть процент дублей.  
-- Применили статистический анализ для проверки результатов.  
-- Метрики:  
-  - Процент задубленности интентов  
-  - Покрытие автоматизированных ответов  
-  - Влияние на точность интентов и работу классификатора  
-
-### Результаты  
-- Выяснили, что более 50% продовых интентов являются дублями.  
-- Доказали необходимость слияния дублей.  
-- Запущен проект по слиянию дублей, который уже улучшает точность интентов и автоматизацию.  
-- Положительные побочные эффекты: ясность маппинга интентов, упрощение процессов, повышение эффективности классификатора.
-
-### Бизнес-эффект  
-- Повышение скорости работы и уровня автоматизации.  
-- Улучшение точности интентов и общей работы модели.  
-- Позитивное влияние на метрики классификации и продуктивность команды.  
-- Рост качества продукта и удовлетворённости пользователей.
-
-### Ключевые навыки  
-- Статистический анализ и решение сложных задач.  
-- Работа с данными на Python.   
-- Чёткая коммуникация технических выводов.
-
-### Дополнительно  
-- Созданы визуализации и дашборды для демонстрации процента дублей и логики маппинга.  
-- Проект интегрирован в рабочие процессы для постоянного управления дублями.
-
-### Пайплайн
-
-![Pipeline diagram](assets/pipeline_ru_version.png)
+<sub>Collaborative project with the NLP team (intent duplication affects class separability, their area of ownership); the quantitative analysis and business case described here were led by the author. Production code is not publicly available.</sub>
